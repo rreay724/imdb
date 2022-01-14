@@ -3,8 +3,8 @@ import { MovieContext, useMovie } from "../context/movieContext";
 import { useContext } from "react";
 import Slider from "react-slick";
 
-function FanFavorites() {
-  const { trending } = useContext(MovieContext);
+function InTheaters() {
+  const { inTheaters } = useContext(MovieContext);
   var settings = {
     dots: true,
     infinite: false,
@@ -43,14 +43,14 @@ function FanFavorites() {
   return (
     <div className="w-[70rem]">
       <div className="flex pl-10 py-3 ">
-        <div className="border border-l-2 rounded-full border-yellow-500 h-9" />
+        <div className="border border-l-2 rounded-full border-yellow-500  h-9" />
         <div className="pl-2">
-          <h1 className="text-white text-3xl  font-semibold">Fan favorites</h1>
+          <h1 className="text-white text-3xl  font-semibold">In theaters</h1>
           <p className="text-gray-400">This week's top TV and movies</p>
         </div>
       </div>
       <Slider {...settings}>
-        {trending?.results?.map((movie) => (
+        {inTheaters?.results?.map((movie) => (
           <MovieCard
             key={movie.id}
             id={movie.id}
@@ -64,4 +64,4 @@ function FanFavorites() {
   );
 }
 
-export default FanFavorites;
+export default InTheaters;

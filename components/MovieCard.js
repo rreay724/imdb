@@ -1,8 +1,19 @@
+import { useRouter } from "next/dist/client/router";
 import { StarIcon } from "@heroicons/react/solid";
 
-function MovieItem({ poster, rating, title }) {
+function MovieCard({ poster, rating, title, id }) {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push({
+      pathname: "/moviePage",
+      query: {
+        id: id,
+      },
+    });
+  };
   return (
-    <div className="px-5">
+    <div className="px-5 hover:opacity-80 cursor-pointer" onClick={handleClick}>
       <div className="h-[30rem] bg-black-medium w-[12rem] rounded-lg">
         <img src={poster} className="object-cover " />
         <div className="pl-4 pt-2">
@@ -17,4 +28,4 @@ function MovieItem({ poster, rating, title }) {
   );
 }
 
-export default MovieItem;
+export default MovieCard;
