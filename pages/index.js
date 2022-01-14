@@ -15,8 +15,10 @@ export default function Home() {
       </Head>
       <Header />
 
-      <main className="justify-center w-full">
-        <Trending />
+      <main>
+        <div className="flex items-center justify-center">
+          <Trending />
+        </div>
       </main>
     </div>
   );
