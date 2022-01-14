@@ -12,6 +12,7 @@ function moviePage() {
   const [stars, setStars] = useState([]);
   let writers = [];
 
+  console.log("MOVIE", movie);
   console.log("CREW", crew);
 
   let hours = movie?.runtime / 60;
@@ -110,10 +111,18 @@ function moviePage() {
           {/* End title and info */}
           {/* Start movie poster and details */}
           <div className="pt-5 w-full">
-            <img
-              src={`https://image.tmdb.org/t/p/w500${movie?.backdrop_path}`}
-              className="w-full"
-            />
+            {movie?.backdrop_path ? (
+              <img
+                src={"https://image.tmdb.org/t/p/w500" + movie?.backdrop_path}
+                className="w-full object-fit"
+              />
+            ) : (
+              <img
+                src={"https://image.tmdb.org/t/p/w500" + movie?.poster_path}
+                className="max-w-full object-contain"
+              />
+            )}
+
             {/* genres */}
             <div className="flex space-x-5 pt-5">
               {movie?.genres?.map((genre) => (
