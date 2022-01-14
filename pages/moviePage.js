@@ -9,6 +9,10 @@ function moviePage() {
 
   const [movie, setMovie] = useState();
   const [crew, setCrew] = useState();
+  const [stars, setStars] = useState([]);
+  let writers = [];
+
+  console.log("CREW", crew);
 
   let hours = movie?.runtime / 60;
   let rhours = Math.floor(hours);
@@ -61,11 +65,21 @@ function moviePage() {
     fetchCrew();
   }, [id]);
 
+  // useEffect(() => {
+  //   crew?.crew[0].map((crewMember) => {
+  //     if (crewMember?.department === "Directing") {
+  //       writers.push(crewMember);
+  //     }
+  //   });
+  // }, [id]);
+
+  console.log("WRITERS", writers);
+
   return (
     <div className="min-h-screen bg-black-black min-w-screen">
       <Header />
       <div className="grid w-screen place-items-center pt-20">
-        <div className="bg-black-default w-[70rem] px-5 py-10">
+        <div className="bg-black-default w-[80rem] px-5 py-10 my-10">
           {/* title and info header */}
 
           <div className="grid grid-cols-2 items-center w-full flex-grow">
@@ -107,15 +121,44 @@ function moviePage() {
                   className="border-2 border-gray-300 rounded-full w-24 
                 text-gray-300 text-center py-1 px-2 hover:opacity-60 cursor-pointer"
                 >
-                  <p>{genre?.name}</p>
+                  <p className="truncate">{genre?.name}</p>
                 </div>
               ))}
             </div>
             {/* end genres */}
             {/* start description and details */}
-            <div className="w-[40rem] py-3 text-gray-300 text-lg">
-              <p>{movie?.overview}</p>
+            <div className="w-[60rem] ">
+              <div className="py-3 text-gray-300 text-lg">
+                <p>{movie?.overview}</p>
+              </div>
+              <div className="border border-t border-b border-l-0 border-r-0 border-gray-500 py-5">
+                {crew?.crew?.map((crewMember) => (
+                  <div>
+                    {crewMember?.job === "Director" ? (
+                      <div className="flex space-x-3 items-center  text-lg">
+                        <p className="text-gray-300 font-bold">Director</p>
+                        <a className="text-blue-500 cursor-pointer hover:underline">
+                          {crewMember?.name}
+                        </a>
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+              <div className="border border-t border-b border-l-0 border-r-0 border-gray-500 py-5">
+                <div className="flex space-x-3 items-center text-lg">
+                  <h3 className="text-gray-300 font-bold">Stars</h3>
+                  <div className="flex space-x-3">
+                    {crew?.cast?.slice(0, 3).map((castMember) => (
+                      <a className="text-blue-500 cursor-pointer hover:underline">
+                        {castMember?.name}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
+
             {/* end description and details */}
           </div>
         </div>
