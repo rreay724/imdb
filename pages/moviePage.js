@@ -1,6 +1,6 @@
 import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
-import { Header } from "../components/index";
+import { Header, ActorItem } from "../components/index";
 import { StarIcon } from "@heroicons/react/solid";
 
 function moviePage() {
@@ -9,7 +9,8 @@ function moviePage() {
 
   const [movie, setMovie] = useState();
   const [crew, setCrew] = useState();
-  const [stars, setStars] = useState([]);
+  const [videos, setVideos] = useState();
+  const [images, setImages] = useState();
   let writers = [];
 
   console.log("MOVIE", movie);
@@ -32,6 +33,7 @@ function moviePage() {
     }
   };
 
+  // get movie details
   useEffect(() => {
     const fetchMovies = async () => {
       const movies = await fetch(
@@ -49,6 +51,7 @@ function moviePage() {
     fetchMovies();
   }, [id]);
 
+  // get cast and crew
   useEffect(() => {
     const fetchCrew = async () => {
       const cast = await fetch(
@@ -66,15 +69,45 @@ function moviePage() {
     fetchCrew();
   }, [id]);
 
+  // // get movie Videos
   // useEffect(() => {
-  //   crew?.crew[0].map((crewMember) => {
-  //     if (crewMember?.department === "Directing") {
-  //       writers.push(crewMember);
-  //     }
-  //   });
+  //   const fetchVideos = async () => {
+  //     const video = await fetch(
+  //       `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
+  //           Accept: "application/json;charset=utf-8",
+  //         },
+  //       }
+  //     ).then((res) => res.json());
+  //     setVideos(video);
+  //   };
+
+  //   fetchVideos();
+  // }, [id]);
+
+  // // get movie images
+  // useEffect(() => {
+  //   const fetchImages = async () => {
+  //     const image = await fetch(
+  //       `https://api.themoviedb.org/3/movie/${id}/images?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
+  //           Accept: "application/json;charset=utf-8",
+  //         },
+  //       }
+  //     ).then((res) => res.json());
+  //     setImages(image);
+  //   };
+
+  //   fetchImages();
   // }, [id]);
 
   console.log("WRITERS", writers);
+  // console.log("VIDEOS", videos);
+  // console.log("IMAGES", images);
 
   return (
     <div className="min-h-screen bg-black-black min-w-screen">
@@ -169,6 +202,16 @@ function moviePage() {
             </div>
 
             {/* end description and details */}
+            <h1>TOP CAST</h1>
+            <div>
+              {crew?.cast?.slice(0, 20).map((castMember) => (
+                <ActorItem
+                  actorName={castMember?.name}
+                  characterName={castMember?.character}
+                  profilePic={castMember?.profile_path}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
