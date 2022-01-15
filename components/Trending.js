@@ -49,7 +49,7 @@ function FanFavorites() {
           <p className="text-gray-400">This week's top TV and movies</p>
         </div>
       </div>
-      <div className="flex overflow-x-scroll scrollbar-hide">
+      <div className="flex overflow-x-scroll">
         {trending?.results?.map((movie) => (
           <MovieCard
             key={movie.id}

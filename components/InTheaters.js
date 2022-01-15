@@ -50,7 +50,7 @@ function InTheaters() {
         </div>
       </div>
       {/* <Slider {...settings}> */}
-      <div className="flex overflow-x-scroll scrollbar-hide pb-20">
+      <div className="flex overflow-x-scroll pb-20">
         {inTheaters?.results?.map((movie) => (
           <MovieCard
             key={movie.id}

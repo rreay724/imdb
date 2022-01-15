@@ -2,6 +2,7 @@ import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
 import { Header, ActorItem } from "../components/index";
 import { StarIcon } from "@heroicons/react/solid";
+import { ChevronRightIcon } from "@heroicons/react/outline";
 
 function moviePage() {
   const router = useRouter();
@@ -163,7 +164,9 @@ function moviePage() {
                   className="border-2 border-gray-300 rounded-full w-24 
                 text-gray-300 text-center py-1 px-2 hover:opacity-60 cursor-pointer"
                 >
-                  <p className="truncate">{genre?.name}</p>
+                  <p className="">
+                    {genre?.name === "Science Fiction" ? "Sci-Fi" : genre?.name}
+                  </p>
                 </div>
               ))}
             </div>
@@ -202,8 +205,13 @@ function moviePage() {
             </div>
 
             {/* end description and details */}
-            <h1>TOP CAST</h1>
-            <div>
+            {/* Cast section */}
+            <div className="py-5 flex cursor-pointer">
+              <div className="border-l-2 border-yellow-500 pr-2" />
+              <h1 className="text-gray-300 font-bold text-3xl">Top cast</h1>
+              <ChevronRightIcon className="w-8 text-white font-semibold hover:text-yellow-500 pt-1" />
+            </div>
+            <div className="grid grid-cols-2 space-y-5">
               {crew?.cast?.slice(0, 20).map((castMember) => (
                 <ActorItem
                   actorName={castMember?.name}
@@ -212,6 +220,7 @@ function moviePage() {
                 />
               ))}
             </div>
+            {/* end cast section */}
           </div>
         </div>
       </div>
