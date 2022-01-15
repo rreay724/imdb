@@ -41,7 +41,7 @@ function InTheaters() {
   };
 
   return (
-    <div className="w-[70rem]">
+    <div className="w-[75rem]">
       <div className="flex pl-10 py-3 ">
         <div className="border border-l-2 rounded-full border-yellow-500  h-9" />
         <div className="pl-2">
@@ -49,7 +49,8 @@ function InTheaters() {
           <p className="text-gray-400">This week's top TV and movies</p>
         </div>
       </div>
-      <Slider {...settings}>
+      {/* <Slider {...settings}> */}
+      <div className="flex overflow-x-scroll scrollbar-hide pb-20">
         {inTheaters?.results?.map((movie) => (
           <MovieCard
             key={movie.id}
@@ -59,7 +60,9 @@ function InTheaters() {
             title={movie.title ? movie.title : movie.name}
           />
         ))}
-      </Slider>
+      </div>
+
+      {/* </Slider> */}
     </div>
   );
 }
