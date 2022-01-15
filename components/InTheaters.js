@@ -42,7 +42,7 @@ function InTheaters() {
 
   return (
     <div className="w-[75rem]">
-      <div className="flex pl-10 py-3 ">
+      <div className="flex pl-5 py-3 ">
         <div className="border border-l-2 rounded-full border-yellow-500  h-9" />
         <div className="pl-2">
           <h1 className="text-white text-3xl  font-semibold">In theaters</h1>

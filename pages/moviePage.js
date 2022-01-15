@@ -1,6 +1,6 @@
 import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
-import { Header, ActorItem } from "../components/index";
+import { Header, ActorItem, MovieCard } from "../components/index";
 import { StarIcon } from "@heroicons/react/solid";
 import { ChevronRightIcon } from "@heroicons/react/outline";
 
@@ -12,6 +12,7 @@ function moviePage() {
   const [crew, setCrew] = useState();
   const [videos, setVideos] = useState();
   const [images, setImages] = useState();
+  const [similar, setSimilar] = useState();
   let writers = [];
 
   console.log("MOVIE", movie);
@@ -70,23 +71,25 @@ function moviePage() {
     fetchCrew();
   }, [id]);
 
-  // // get movie Videos
-  // useEffect(() => {
-  //   const fetchVideos = async () => {
-  //     const video = await fetch(
-  //       `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
-  //           Accept: "application/json;charset=utf-8",
-  //         },
-  //       }
-  //     ).then((res) => res.json());
-  //     setVideos(video);
-  //   };
+  // get similar movies
+  useEffect(() => {
+    const similarMovieList = async () => {
+      const similarMovies = await fetch(
+        `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US&page=1`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
+            Accept: "application/json;charset=utf-8",
+          },
+        }
+      ).then((res) => res.json());
+      setSimilar(similarMovies);
+    };
 
-  //   fetchVideos();
-  // }, [id]);
+    similarMovieList();
+  }, [id]);
+
+  console.log("SIMILAR", similar);
 
   // // get movie images
   // useEffect(() => {
@@ -221,6 +224,46 @@ function moviePage() {
               ))}
             </div>
             {/* end cast section */}
+            {/* director and all crew section */}
+            <div className="border border-t border-b border-l-0 border-r-0 border-gray-500 py-5 mt-5 w-[60rem]">
+              {crew?.crew?.map((crewMember) => (
+                <div>
+                  {crewMember?.job === "Director" ? (
+                    <div className="flex space-x-3 items-center  text-lg">
+                      <p className="text-gray-300 font-bold">Director</p>
+                      <a className="text-blue-500 cursor-pointer hover:underline">
+                        {crewMember?.name}
+                      </a>
+                    </div>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+            {/* End director and all crew section */}
+            {/* Similar movies */}
+            <div className="w-[60rem] pt-5">
+              <div className="flex pl-0 py-3 ">
+                <div className="border border-l-2 rounded-full border-yellow-500 h-9" />
+                <div className="pl-2">
+                  <h1 className="text-white text-3xl  font-semibold">
+                    More like this
+                  </h1>
+                  <p className="text-gray-400">This week's top TV and movies</p>
+                </div>
+              </div>
+              <div className="flex overflow-x-scroll">
+                {similar?.results?.map((movie) => (
+                  <MovieCard
+                    key={movie.id}
+                    id={movie.id}
+                    rating={movie.vote_average}
+                    poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                    title={movie.title ? movie.title : movie.name}
+                  />
+                ))}
+              </div>
+            </div>
+            {/* End similar movies */}
           </div>
         </div>
       </div>

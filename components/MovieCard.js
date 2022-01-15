@@ -13,7 +13,10 @@ function MovieCard({ poster, rating, title, id }) {
     });
   };
   return (
-    <div className="px-5 hover:opacity-80 cursor-pointer" onClick={handleClick}>
+    <div
+      className="px-5 hover:opacity-80 cursor-pointer shadow-xl"
+      onClick={handleClick}
+    >
       <div className="h-[30rem] bg-black-medium w-[12rem] rounded-lg">
         <img src={poster} className="object-cover " />
         <div className="pl-4 pt-2">
