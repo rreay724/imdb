@@ -18,7 +18,7 @@ function Header() {
             placeholder="Search IMDb"
             className="w-full focus:outline-none"
           />
-          <SearchIcon className="w-5 text-black-black" />
+          <SearchIcon className="w-5 text-black-black cursor-pointer" />
         </div>
       </div>
     </div>

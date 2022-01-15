@@ -13,6 +13,7 @@ function moviePage() {
   const [videos, setVideos] = useState();
   const [images, setImages] = useState();
   const [similar, setSimilar] = useState();
+  const [movieTrailer, setMovieTrailer] = useState();
   let writers = [];
 
   console.log("MOVIE", movie);
@@ -91,23 +92,16 @@ function moviePage() {
 
   console.log("SIMILAR", similar);
 
-  // // get movie images
-  // useEffect(() => {
-  //   const fetchImages = async () => {
-  //     const image = await fetch(
-  //       `https://api.themoviedb.org/3/movie/${id}/images?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
-  //           Accept: "application/json;charset=utf-8",
-  //         },
-  //       }
-  //     ).then((res) => res.json());
-  //     setImages(image);
-  //   };
+  // get movie trailer
+  useEffect(() => {
+    const fetchTrailers = async () => {
+      const trailer = await fetch(
+        `https://imdb-api.com/en/API/Trailer/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}`
+      ).then((res) => trailer);
+    };
 
-  //   fetchImages();
-  // }, [id]);
+    fetchTrailers();
+  }, [id]);
 
   console.log("WRITERS", writers);
   // console.log("VIDEOS", videos);

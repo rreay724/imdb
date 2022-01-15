@@ -5,6 +5,8 @@ import Slider from "react-slick";
 
 function FanFavorites() {
   const { trending } = useContext(MovieContext);
+  const { imdbTrending } = useContext(MovieContext);
+
   var settings = {
     dots: true,
     infinite: false,
@@ -50,13 +52,13 @@ function FanFavorites() {
         </div>
       </div>
       <div className="flex overflow-x-scroll">
-        {trending?.results?.map((movie) => (
+        {imdbTrending?.items?.slice(0, 20).map((movie) => (
           <MovieCard
             key={movie.id}
             id={movie.id}
-            rating={movie.vote_average}
-            poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            title={movie.title ? movie.title : movie.name}
+            rating={movie.imDbRating}
+            poster={movie.image}
+            title={movie.title}
           />
         ))}
       </div>

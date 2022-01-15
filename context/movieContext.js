@@ -5,6 +5,7 @@ export const MovieContext = createContext(null);
 const MovieProvider = (props) => {
   const [trending, setTrending] = useState();
   const [inTheaters, setInTheaters] = useState();
+  const [imdbTrending, setImdbTrending] = useState();
   useEffect(() => {
     const fetchTrending = async () => {
       const trendingMovies = await fetch(
@@ -37,8 +38,18 @@ const MovieProvider = (props) => {
 
     fetchInTheaters();
   }, []);
+  useEffect(() => {
+    const fetchImdbTrending = async () => {
+      const imdbTrendingMovies = await fetch(
+        `https://imdb-api.com/en/API/MostPopularMovies/${process.env.NEXT_PUBLIC_IMDB_API_KEY}`
+      ).then((res) => res.json());
+      setImdbTrending(imdbTrendingMovies);
+    };
 
-  const movieContextValue = { trending, inTheaters };
+    fetchImdbTrending();
+  }, []);
+
+  const movieContextValue = { trending, inTheaters, imdbTrending };
 
   return <MovieContext.Provider value={movieContextValue} {...props} />;
 };
