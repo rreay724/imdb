@@ -9,7 +9,6 @@ function moviePage() {
   const { id } = router.query;
 
   const [movie, setMovie] = useState();
-  const [crew, setCrew] = useState();
   const [videos, setVideos] = useState();
   const [images, setImages] = useState();
   const [similar, setSimilar] = useState();
@@ -17,7 +16,6 @@ function moviePage() {
   let writers = [];
 
   console.log("MOVIE", movie);
-  console.log("CREW", crew);
 
   let hours = movie?.runtime / 60;
   let rhours = Math.floor(hours);
@@ -40,40 +38,15 @@ function moviePage() {
   useEffect(() => {
     const fetchMovies = async () => {
       const movies = await fetch(
-        `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
-            Accept: "application/json;charset=utf-8",
-          },
-        }
+        `https://imdb-api.com/en/API/Title/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}/FullActor,FullCast,Ratings,`
       ).then((res) => res.json());
+
       setMovie(movies);
     };
+    console.log("MOVIE", movie);
 
     fetchMovies();
-  }, [id]);
 
-  // get cast and crew
-  useEffect(() => {
-    const fetchCrew = async () => {
-      const cast = await fetch(
-        `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
-            Accept: "application/json;charset=utf-8",
-          },
-        }
-      ).then((res) => res.json());
-      setCrew(cast);
-    };
-
-    fetchCrew();
-  }, [id]);
-
-  // get similar movies
-  useEffect(() => {
     const similarMovieList = async () => {
       const similarMovies = await fetch(
         `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US&page=1`,
@@ -88,12 +61,7 @@ function moviePage() {
     };
 
     similarMovieList();
-  }, [id]);
 
-  console.log("SIMILAR", similar);
-
-  // get movie trailer
-  useEffect(() => {
     const fetchTrailers = async () => {
       const trailer = await fetch(
         `https://imdb-api.com/en/API/Trailer/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}`
@@ -102,6 +70,8 @@ function moviePage() {
 
     fetchTrailers();
   }, [id]);
+
+  // get cast and crew
 
   console.log("WRITERS", writers);
   // console.log("VIDEOS", videos);
@@ -118,10 +88,10 @@ function moviePage() {
             <div className="justify-start">
               <h1 className="text-white text-5xl">{movie?.title}</h1>
               <div className="text-gray-400 space-x-2 flex items-center">
-                <p>{movie?.release_date?.split("-")[0]} </p>
+                <p>{movie?.releaseDate?.split("-")[0]} </p>
                 <p>•</p>
                 <p></p>
-                <p>{runTime}</p>
+                <p>{movie?.runtimeStr}</p>
               </div>
             </div>
             <div className="flex justify-end">
@@ -130,9 +100,9 @@ function moviePage() {
                 <div className="flex items-center space-x-2">
                   <StarIcon className="text-yellow-500 w-10" />
                   <div>
-                    <h2 className="text-white">{movie?.vote_average}/10</h2>
+                    <h2 className="text-white">{movie?.imDbRating}/10</h2>
                     <p className="text-gray-400">
-                      {numFormatter(movie?.vote_count)}
+                      {numFormatter(movie?.imDbRatingVotes)}
                     </p>
                   </div>
                 </div>
@@ -142,28 +112,16 @@ function moviePage() {
           {/* End title and info */}
           {/* Start movie poster and details */}
           <div className="pt-5 w-full">
-            {movie?.backdrop_path ? (
-              <img
-                src={"https://image.tmdb.org/t/p/w500" + movie?.backdrop_path}
-                className="w-full object-fit"
-              />
-            ) : (
-              <img
-                src={"https://image.tmdb.org/t/p/w500" + movie?.poster_path}
-                className="max-w-full object-contain"
-              />
-            )}
+            {<img src={movie?.image} className="w-full object-fit" />}
 
             {/* genres */}
             <div className="flex space-x-5 pt-5">
-              {movie?.genres?.map((genre) => (
+              {movie?.genreList?.map((genre) => (
                 <div
                   className="border-2 border-gray-300 rounded-full w-24 
                 text-gray-300 text-center py-1 px-2 hover:opacity-60 cursor-pointer"
                 >
-                  <p className="">
-                    {genre?.name === "Science Fiction" ? "Sci-Fi" : genre?.name}
-                  </p>
+                  <p className="">{genre?.value}</p>
                 </div>
               ))}
             </div>
@@ -171,29 +129,27 @@ function moviePage() {
             {/* start description and details */}
             <div className="w-[60rem] ">
               <div className="py-3 text-gray-300 text-lg">
-                <p>{movie?.overview}</p>
+                <p>{movie?.plot}</p>
               </div>
               <div className="border border-t border-b border-l-0 border-r-0 border-gray-500 py-5">
-                {crew?.crew?.map((crewMember) => (
-                  <div>
-                    {crewMember?.job === "Director" ? (
-                      <div className="flex space-x-3 items-center  text-lg">
-                        <p className="text-gray-300 font-bold">Director</p>
-                        <a className="text-blue-500 cursor-pointer hover:underline">
-                          {crewMember?.name}
-                        </a>
-                      </div>
-                    ) : null}
+                <div>
+                  <div className="flex space-x-3 items-center  text-lg">
+                    <p className="text-gray-300 font-bold">Director</p>
+                    {movie?.directorList?.map((director) => (
+                      <a className="text-blue-500 cursor-pointer hover:underline space-x-3">
+                        {director?.name}
+                      </a>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
               <div className="border border-t border-b border-l-0 border-r-0 border-gray-500 py-5">
                 <div className="flex space-x-3 items-center text-lg">
                   <h3 className="text-gray-300 font-bold">Stars</h3>
                   <div className="flex space-x-3">
-                    {crew?.cast?.slice(0, 3).map((castMember) => (
+                    {movie?.actorList?.slice(0, 3).map((actor) => (
                       <a className="text-blue-500 cursor-pointer hover:underline">
-                        {castMember?.name}
+                        {actor?.name}
                       </a>
                     ))}
                   </div>
@@ -209,29 +165,27 @@ function moviePage() {
               <ChevronRightIcon className="w-8 text-white font-semibold hover:text-yellow-500 pt-1" />
             </div>
             <div className="grid grid-cols-2 space-y-5">
-              {crew?.cast?.slice(0, 20).map((castMember) => (
+              {movie?.actorList?.slice(0, 20).map((castMember) => (
                 <ActorItem
                   actorName={castMember?.name}
-                  characterName={castMember?.character}
-                  profilePic={castMember?.profile_path}
+                  characterName={castMember?.asCharacter}
+                  profilePic={castMember?.image}
                 />
               ))}
             </div>
             {/* end cast section */}
             {/* director and all crew section */}
             <div className="border border-t border-b border-l-0 border-r-0 border-gray-500 py-5 mt-5 w-[60rem]">
-              {crew?.crew?.map((crewMember) => (
-                <div>
-                  {crewMember?.job === "Director" ? (
-                    <div className="flex space-x-3 items-center  text-lg">
-                      <p className="text-gray-300 font-bold">Director</p>
-                      <a className="text-blue-500 cursor-pointer hover:underline">
-                        {crewMember?.name}
-                      </a>
-                    </div>
-                  ) : null}
+              <div>
+                <div className="flex space-x-3 items-center  text-lg">
+                  <p className="text-gray-300 font-bold">Director</p>
+                  {movie?.directorList?.map((director) => (
+                    <a className="text-blue-500 cursor-pointer hover:underline space-x-3">
+                      {director?.name}
+                    </a>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
             {/* End director and all crew section */}
             {/* Similar movies */}
@@ -246,13 +200,13 @@ function moviePage() {
                 </div>
               </div>
               <div className="flex overflow-x-scroll">
-                {similar?.results?.map((movie) => (
+                {movie?.similars?.map((movie) => (
                   <MovieCard
                     key={movie.id}
                     id={movie.id}
-                    rating={movie.vote_average}
-                    poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                    title={movie.title ? movie.title : movie.name}
+                    rating={movie.imDbRating}
+                    poster={movie.image}
+                    title={movie.title}
                   />
                 ))}
               </div>

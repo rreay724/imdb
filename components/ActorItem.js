@@ -2,11 +2,7 @@ function ActorItem({ actorName, characterName, profilePic }) {
   return (
     <div className="flex items-center">
       <img
-        src={
-          profilePic
-            ? `https://image.tmdb.org/t/p/w500${profilePic}`
-            : "/defaultProfile.png"
-        }
+        src={profilePic ? profilePic : "/defaultProfile.png"}
         className="rounded-full w-24 h-24 object-cover cursor-pointer hover:opacity-70"
       />
       <div className="pl-5">

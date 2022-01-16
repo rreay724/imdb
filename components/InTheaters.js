@@ -51,13 +51,13 @@ function InTheaters() {
       </div>
       {/* <Slider {...settings}> */}
       <div className="flex overflow-x-scroll pb-20">
-        {inTheaters?.results?.map((movie) => (
+        {inTheaters?.items?.map((movie) => (
           <MovieCard
             key={movie.id}
             id={movie.id}
             rating={movie.vote_average}
-            poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            title={movie.title ? movie.title : movie.name}
+            poster={movie.image}
+            title={movie.title}
           />
         ))}
       </div>
