@@ -64,6 +64,7 @@ export default function moviePage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
+
       <div className="grid w-screen place-items-center pt-20">
         <div className="bg-black-default w-[80rem] px-12 py-10 my-10">
           {/* title and info header */}
@@ -101,7 +102,7 @@ export default function moviePage() {
               <img src={movie?.image} className="w-[20rem]" />
               <iframe
                 src={movieTrailer?.linkEmbed}
-                frameborder="0"
+                frameBorder="0"
                 title="video"
                 width={1000}
               />

@@ -1,9 +1,8 @@
 import "../styles/globals.css";
 import { MovieProvider } from "../context/movieContext";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import type { AppProps } from "next/app";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }:AppProps) {
   return (
     <MovieProvider>
       <Component {...pageProps} />
