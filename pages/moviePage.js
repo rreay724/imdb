@@ -1,28 +1,28 @@
 import { useRouter } from "next/dist/client/router";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Header, ActorItem, MovieCard } from "../components/index";
 import { StarIcon } from "@heroicons/react/solid";
 import { ChevronRightIcon } from "@heroicons/react/outline";
 
-function moviePage() {
+export default function moviePage() {
   const router = useRouter();
   const { id } = router.query;
 
   const [movie, setMovie] = useState();
-  const [videos, setVideos] = useState();
   const [images, setImages] = useState();
   const [similar, setSimilar] = useState();
   const [movieTrailer, setMovieTrailer] = useState();
-  let writers = [];
 
   console.log("MOVIE", movie);
+  console.log("MOVIE TRAILER", movieTrailer);
 
-  let hours = movie?.runtime / 60;
-  let rhours = Math.floor(hours);
-  let minutes = (hours - rhours) * 60;
-  let rminutes = Math.round(minutes);
+  // let hours = movie?.runtime / 60;
+  // let rhours = Math.floor(hours);
+  // let minutes = (hours - rhours) * 60;
+  // let rminutes = Math.round(minutes);
 
-  const runTime = rhours + "h " + rminutes + "m";
+  // const runTime = rhours + "h " + rminutes + "m";
 
   const numFormatter = (num) => {
     if (num > 999 && num < 1000000) {
@@ -38,7 +38,7 @@ function moviePage() {
   useEffect(() => {
     const fetchMovies = async () => {
       const movies = await fetch(
-        `https://imdb-api.com/en/API/Title/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}/FullActor,FullCast,Ratings,`
+        `https://imdb-api.com/en/API/Title/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}/FullActor,FullCast,Ratings,Images`
       ).then((res) => res.json());
 
       setMovie(movies);
@@ -47,41 +47,25 @@ function moviePage() {
 
     fetchMovies();
 
-    const similarMovieList = async () => {
-      const similarMovies = await fetch(
-        `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US&page=1`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
-            Accept: "application/json;charset=utf-8",
-          },
-        }
-      ).then((res) => res.json());
-      setSimilar(similarMovies);
-    };
-
-    similarMovieList();
-
     const fetchTrailers = async () => {
       const trailer = await fetch(
         `https://imdb-api.com/en/API/Trailer/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}`
-      ).then((res) => trailer);
+      ).then((res) => res.json());
+      setMovieTrailer(trailer);
     };
 
     fetchTrailers();
   }, [id]);
 
-  // get cast and crew
-
-  console.log("WRITERS", writers);
-  // console.log("VIDEOS", videos);
-  // console.log("IMAGES", images);
-
   return (
     <div className="min-h-screen bg-black-black min-w-screen">
+      <Head>
+        <title>iMDB</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Header />
       <div className="grid w-screen place-items-center pt-20">
-        <div className="bg-black-default w-[80rem] px-5 py-10 my-10">
+        <div className="bg-black-default w-[80rem] px-12 py-10 my-10">
           {/* title and info header */}
 
           <div className="grid grid-cols-2 items-center w-full flex-grow">
@@ -90,7 +74,8 @@ function moviePage() {
               <div className="text-gray-400 space-x-2 flex items-center">
                 <p>{movie?.releaseDate?.split("-")[0]} </p>
                 <p>•</p>
-                <p></p>
+                <p>{movie?.contentRating}</p>
+                <p>•</p>
                 <p>{movie?.runtimeStr}</p>
               </div>
             </div>
@@ -111,8 +96,17 @@ function moviePage() {
           </div>
           {/* End title and info */}
           {/* Start movie poster and details */}
-          <div className="pt-5 w-full">
-            {<img src={movie?.image} className="w-full object-fit" />}
+          <div className="pt-5 w-full mx-auto">
+            <div className="flex space-x-1">
+              <img src={movie?.image} className="w-[20rem]" />
+              <iframe
+                src={movieTrailer?.linkEmbed}
+                frameborder="0"
+                title="video"
+                width={1000}
+              />
+            </div>
+            {/* end movie poster and details */}
 
             {/* genres */}
             <div className="flex space-x-5 pt-5">
@@ -144,10 +138,22 @@ function moviePage() {
                 </div>
               </div>
               <div className="border border-t border-b border-l-0 border-r-0 border-gray-500 py-5">
+                <div>
+                  <div className="flex space-x-3 items-center  text-lg">
+                    <p className="text-gray-300 font-bold">Writers</p>
+                    {movie?.writerList?.map((writer) => (
+                      <a className="text-blue-500 cursor-pointer hover:underline space-x-3">
+                        {writer?.name}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="border border-t border-b border-l-0 border-r-0 border-gray-500 py-5">
                 <div className="flex space-x-3 items-center text-lg">
                   <h3 className="text-gray-300 font-bold">Stars</h3>
                   <div className="flex space-x-3">
-                    {movie?.actorList?.slice(0, 3).map((actor) => (
+                    {movie?.starList?.map((actor) => (
                       <a className="text-blue-500 cursor-pointer hover:underline">
                         {actor?.name}
                       </a>
@@ -158,6 +164,24 @@ function moviePage() {
             </div>
 
             {/* end description and details */}
+            {/* Start Images */}
+            <div className="w-[60rem] pt-5">
+              <div className="flex pl-0 py-3 ">
+                <div className="border border-l-2 rounded-full border-yellow-500 h-9" />
+                <div className="pl-2">
+                  <h1 className="text-white text-3xl  font-semibold">Photos</h1>
+                </div>
+              </div>
+              <div className="flex overflow-x-scroll scrollbar-hide space-x-2">
+                {movie?.images?.items.map((image) => (
+                  <img
+                    src={image.image}
+                    className="w-40 h-40 object-cover cursor-pointer"
+                  />
+                ))}
+              </div>
+            </div>
+            {/* End Images */}
             {/* Cast section */}
             <div className="py-5 flex cursor-pointer">
               <div className="border-l-2 border-yellow-500 pr-2" />
@@ -167,6 +191,7 @@ function moviePage() {
             <div className="grid grid-cols-2 space-y-5">
               {movie?.actorList?.slice(0, 20).map((castMember) => (
                 <ActorItem
+                  key={castMember?.id}
                   actorName={castMember?.name}
                   characterName={castMember?.asCharacter}
                   profilePic={castMember?.image}
@@ -218,5 +243,3 @@ function moviePage() {
     </div>
   );
 }
-
-export default moviePage;
