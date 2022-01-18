@@ -5,7 +5,7 @@ import { Header, ActorItem, MovieCard } from "../components/index";
 import { StarIcon } from "@heroicons/react/solid";
 import { ChevronRightIcon } from "@heroicons/react/outline";
 
-export default function moviePage() {
+export default function MoviePage() {
   const router = useRouter();
   const { id } = router.query;
 
@@ -193,6 +193,7 @@ export default function moviePage() {
               {movie?.actorList?.slice(0, 20).map((castMember) => (
                 <ActorItem
                   key={castMember?.id}
+                  id={castMember?.id}
                   actorName={castMember?.name}
                   characterName={castMember?.asCharacter}
                   profilePic={castMember?.image}
