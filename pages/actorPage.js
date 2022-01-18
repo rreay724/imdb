@@ -1,16 +1,12 @@
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { Header, ActorItem, MovieCard } from "../components/index";
-import { StarIcon } from "@heroicons/react/solid";
-import { ChevronRightIcon } from "@heroicons/react/outline";
+import { Header, MovieListItem } from "../components/index";
 
 export default function ActorPage() {
   const router = useRouter();
   const { id } = router.query;
 
-  const [movie, setMovie] = useState();
-  const [movieTrailer, setMovieTrailer] = useState();
   const [actor, setActor] = useState();
 
   const numFormatter = (num) => {
@@ -38,13 +34,6 @@ export default function ActorPage() {
 
   console.log("Actor", actor);
 
-  const birthday = actor?.birthDate.toLocaleString("default", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-
   let date = new Date(actor?.birthDate); // 2020-06-21
   let month = date.toLocaleString("en-us", { month: "long" }); /* June */
   let day = date.toLocaleString("en-us", { day: "numeric" }); /* June */
@@ -66,7 +55,7 @@ export default function ActorPage() {
             <div className="justify-start">
               <h1 className="text-white text-5xl">{actor?.name}</h1>
               <p className="text-blue-500 text-xs pt-2">
-                {actor?.role.replaceAll(",", "  |  ")}
+                {actor?.role?.replaceAll(",", "  |  ")}
               </p>
             </div>
             <div className="flex justify-end"></div>
@@ -74,17 +63,10 @@ export default function ActorPage() {
           {/* End title and info */}
           {/* Start movie poster and details */}
           <div className="pt-5 w-full mx-auto">
-            <div className="flex space-x-1">
-              <img src={actor?.image} className="w-[10rem]" />
-              <iframe
-                src={movieTrailer?.linkEmbed}
-                frameBorder="0"
-                title="video"
-                width={1000}
-              />
-            </div>
             {/* end movie poster and details */}
-
+            <div className="flex space-x-1">
+              <img src={actor?.image} className="w-[20rem]" />
+            </div>
             {/* start description and details */}
             <div className="w-[50rem] py-4">
               <p className="text-white text-sm">{actor?.summary}</p>
@@ -104,26 +86,21 @@ export default function ActorPage() {
                   <h1 className="text-white text-3xl  font-semibold">Photos</h1>
                 </div>
               </div>
-              <div className="flex overflow-x-scroll scrollbar-hide space-x-2">
-                {movie?.images?.items.map((image) => (
-                  <img
-                    src={image.image}
-                    className="w-40 h-40 object-cover cursor-pointer"
-                  />
-                ))}
-              </div>
+              <div className="flex overflow-x-scroll scrollbar-hide space-x-2"></div>
             </div>
             {/* End Images */}
 
             {/* director and all crew section */}
-            <div className="border border-t border-b border-l-0 border-r-0 border-gray-500 py-5 mt-5 w-[60rem]">
+            <div className="py-5 mt-5 w-[60rem]">
               <div>
-                <div className="flex space-x-3 items-center  text-lg">
-                  <p className="text-gray-300 font-bold">Director</p>
-                  {movie?.directorList?.map((director) => (
-                    <a className="text-blue-500 cursor-pointer hover:underline space-x-3">
-                      {director?.name}
-                    </a>
+                <div className="space-x-3 items-center  text-lg">
+                  <p className="text-white text-2xl">Filmography</p>
+                  {actor?.castMovies?.map((movie) => (
+                    <MovieListItem
+                      year={movie?.year}
+                      title={movie?.title}
+                      description={movie?.description}
+                    />
                   ))}
                 </div>
               </div>
