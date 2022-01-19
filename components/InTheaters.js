@@ -4,7 +4,8 @@ import { useContext } from "react";
 import Slider from "react-slick";
 
 function InTheaters() {
-  const { inTheaters } = useContext(MovieContext);
+  const { inTheaters, comingSoon } = useContext(MovieContext);
+  console.log("COMING SOON", comingSoon);
   var settings = {
     dots: true,
     infinite: false,
@@ -52,6 +53,25 @@ function InTheaters() {
       {/* <Slider {...settings}> */}
       <div className="flex overflow-x-scroll pb-20">
         {inTheaters?.items?.map((movie) => (
+          <MovieCard
+            key={movie.id}
+            id={movie.id}
+            rating={movie.vote_average}
+            poster={movie.image}
+            title={movie.title}
+          />
+        ))}
+      </div>
+      <div className="flex pl-5 py-3 ">
+        <div className="border border-l-2 rounded-full border-yellow-500  h-9" />
+        <div className="pl-2">
+          <h1 className="text-white text-3xl  font-semibold">Coming soon</h1>
+          <p className="text-gray-400">Upcoming releases</p>
+        </div>
+      </div>
+      {/* <Slider {...settings}> */}
+      <div className="flex overflow-x-scroll pb-20">
+        {comingSoon?.items?.map((movie) => (
           <MovieCard
             key={movie.id}
             id={movie.id}

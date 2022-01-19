@@ -4,8 +4,7 @@ import { useContext } from "react";
 import Slider from "react-slick";
 
 function FanFavorites() {
-  const { trending } = useContext(MovieContext);
-  const { imdbTrending } = useContext(MovieContext);
+  const { imdbTrending, tv } = useContext(MovieContext);
 
   var settings = {
     dots: true,
@@ -47,12 +46,30 @@ function FanFavorites() {
       <div className="flex pl-5 py-3 ">
         <div className="border border-l-2 rounded-full border-yellow-500 h-9" />
         <div className="pl-2">
-          <h1 className="text-white text-3xl  font-semibold">Fan favorites</h1>
-          <p className="text-gray-400">This week's top TV and movies</p>
+          <h1 className="text-white text-3xl  font-semibold">Top movies</h1>
+          <p className="text-gray-400">This week's top movies</p>
         </div>
       </div>
       <div className="flex overflow-x-scroll">
         {imdbTrending?.items?.slice(0, 20).map((movie) => (
+          <MovieCard
+            key={movie.id}
+            id={movie.id}
+            rating={movie.imDbRating}
+            poster={movie.image}
+            title={movie.title}
+          />
+        ))}
+      </div>
+      <div className="flex pl-5 py-3 mt-10">
+        <div className="border border-l-2 rounded-full border-yellow-500 h-9" />
+        <div className="pl-2">
+          <h1 className="text-white text-3xl  font-semibold">Top TV shows</h1>
+          <p className="text-gray-400">This week's top TV shows</p>
+        </div>
+      </div>
+      <div className="flex overflow-x-scroll">
+        {tv?.items?.slice(0, 20).map((movie) => (
           <MovieCard
             key={movie.id}
             id={movie.id}
