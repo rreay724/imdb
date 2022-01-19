@@ -3,9 +3,9 @@ import { MovieContext, useMovie } from "../context/movieContext";
 import { useContext } from "react";
 import Slider from "react-slick";
 
-function FanFavorites() {
-  const { imdbTrending, tv } = useContext(MovieContext);
-
+function InTheaters() {
+  const { inTheaters, comingSoon } = useContext(MovieContext);
+  console.log("COMING SOON", comingSoon);
   var settings = {
     dots: true,
     infinite: false,
@@ -44,46 +44,47 @@ function FanFavorites() {
   return (
     <div className="w-[75rem]">
       <div className="flex pl-5 py-3 ">
-        <div className="border border-l-2 rounded-full border-yellow-500 h-9" />
+        <div className="border border-l-2 rounded-full border-yellow-500  h-9" />
         <div className="pl-2">
-          <h1 className="text-white text-3xl  font-semibold">Top movies</h1>
-          <p className="text-gray-400">This week's top movies</p>
+          <h1 className="text-white text-3xl  font-semibold">In theaters</h1>
+          <p className="text-gray-400">This week's top TV and movies</p>
         </div>
-      </div>
-      <div className="flex overflow-x-scroll">
-        {imdbTrending?.items?.slice(0, 20).map((movie) => (
-          <MovieCard
-            key={movie.id}
-            id={movie.id}
-            rating={movie.imDbRating}
-            poster={movie.image}
-            title={movie.title}
-          />
-        ))}
-      </div>
-      <div className="flex pl-5 py-3 mt-10">
-        <div className="border border-l-2 rounded-full border-yellow-500 h-9" />
-        <div className="pl-2">
-          <h1 className="text-white text-3xl  font-semibold">Top TV shows</h1>
-          <p className="text-gray-400">This week's top TV shows</p>
-        </div>
-      </div>
-      <div className="flex overflow-x-scroll">
-        {tv?.items?.slice(0, 20).map((movie) => (
-          <MovieCard
-            key={movie.id}
-            id={movie.id}
-            rating={movie.imDbRating}
-            poster={movie.image}
-            title={movie.title}
-          />
-        ))}
       </div>
       {/* <Slider {...settings}> */}
+      <div className="flex overflow-x-scroll pb-20">
+        {inTheaters?.items?.map((movie) => (
+          <MovieCard
+            key={movie.id}
+            id={movie.id}
+            rating={movie.vote_average}
+            poster={movie.image}
+            title={movie.title}
+          />
+        ))}
+      </div>
+      <div className="flex pl-5 py-3 ">
+        <div className="border border-l-2 rounded-full border-yellow-500  h-9" />
+        <div className="pl-2">
+          <h1 className="text-white text-3xl  font-semibold">Coming soon</h1>
+          <p className="text-gray-400">Upcoming releases</p>
+        </div>
+      </div>
+      {/* <Slider {...settings}> */}
+      <div className="flex overflow-x-scroll pb-20">
+        {comingSoon?.items?.map((movie) => (
+          <MovieCard
+            key={movie.id}
+            id={movie.id}
+            rating={movie.vote_average}
+            poster={movie.image}
+            title={movie.title}
+          />
+        ))}
+      </div>
 
       {/* </Slider> */}
     </div>
   );
 }
 
-export default FanFavorites;
+export default InTheaters;
