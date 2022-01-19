@@ -1,8 +1,19 @@
 import { MenuIcon, SearchIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/dist/client/router";
+import { useState } from "react";
 
 function Header() {
+  const [searchTerm, setSearchTerm] = useState();
   const router = useRouter();
+
+  const handleSearch = () => {
+    router.push({
+      pathname: "/movieListPage",
+      query: {
+        searchTerm: searchTerm,
+      },
+    });
+  };
   return (
     <div className="flex bg-black-default h-14 items-center justify-center space-x-6">
       <img
@@ -17,6 +28,17 @@ function Header() {
           <input
             placeholder="Search IMDb"
             className="w-full focus:outline-none"
+            type="search"
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+            }}
+            value={searchTerm}
+            onKeyDown={(e) => {
+              if (e.code === "Enter") {
+                e.preventDefault();
+                handleSearch();
+              }
+            }}
           />
           <SearchIcon className="w-5 text-black-black cursor-pointer" />
         </div>
