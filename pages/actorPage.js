@@ -6,18 +6,8 @@ import { Header, MovieListItem } from "../components/index";
 export default function ActorPage() {
   const router = useRouter();
   const { id } = router.query;
-
+  let movies = [];
   const [actor, setActor] = useState();
-
-  const numFormatter = (num) => {
-    if (num > 999 && num < 1000000) {
-      return (num / 1000).toFixed(1) + "K"; // convert to K for number from > 1000 < 1 million
-    } else if (num > 1000000) {
-      return (num / 1000000).toFixed(1) + "M"; // convert to M for number from > 1 million
-    } else if (num < 900) {
-      return num; // if value < 1000, nothing to do
-    }
-  };
 
   // get movie details
   useEffect(() => {
@@ -33,6 +23,7 @@ export default function ActorPage() {
   }, [id]);
 
   console.log("Actor", actor);
+  console.log("MOVIES", movies);
 
   let date = new Date(actor?.birthDate); // 2020-06-21
   let month = date.toLocaleString("en-us", { month: "long" }); /* June */
@@ -93,13 +84,15 @@ export default function ActorPage() {
             {/* director and all crew section */}
             <div className="py-5 mt-5 w-[60rem]">
               <div>
-                <div className="space-x-3 items-center  text-lg">
+                <div className="items-center  text-lg">
                   <p className="text-white text-2xl">Filmography</p>
                   {actor?.castMovies?.map((movie) => (
                     <MovieListItem
+                      id={movie?.id}
                       year={movie?.year}
                       title={movie?.title}
                       description={movie?.description}
+                      role={movie?.role}
                     />
                   ))}
                 </div>

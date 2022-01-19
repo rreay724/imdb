@@ -174,7 +174,7 @@ export default function MoviePage() {
                 </div>
               </div>
               <div className="flex overflow-x-scroll scrollbar-hide space-x-2">
-                {movie?.images?.items.map((image) => (
+                {movie?.images?.items.slice(0, 20).map((image) => (
                   <img
                     src={image.image}
                     className="w-40 h-40 object-cover cursor-pointer"
