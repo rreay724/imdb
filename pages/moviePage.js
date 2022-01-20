@@ -17,12 +17,14 @@ export default function MoviePage() {
   console.log("MOVIE", movie);
   console.log("MOVIE TRAILER", movieTrailer);
 
-  // let hours = movie?.runtime / 60;
-  // let rhours = Math.floor(hours);
-  // let minutes = (hours - rhours) * 60;
-  // let rminutes = Math.round(minutes);
-
-  // const runTime = rhours + "h " + rminutes + "m";
+  const handleDirectorClick = (id) => {
+    router.push({
+      pathname: "/actorPage",
+      query: {
+        id: id,
+      },
+    });
+  };
 
   const numFormatter = (num) => {
     if (num > 999 && num < 1000000) {
@@ -131,7 +133,10 @@ export default function MoviePage() {
                   <div className="flex space-x-3 items-center  text-lg">
                     <p className="text-gray-300 font-bold">Director</p>
                     {movie?.directorList?.map((director) => (
-                      <a className="text-blue-500 cursor-pointer hover:underline space-x-3">
+                      <a
+                        className="text-blue-500 cursor-pointer hover:underline space-x-3"
+                        onClick={() => handleDirectorClick(director.id)}
+                      >
                         {director?.name}
                       </a>
                     ))}
@@ -207,7 +212,10 @@ export default function MoviePage() {
                 <div className="flex space-x-3 items-center  text-lg">
                   <p className="text-gray-300 font-bold">Director</p>
                   {movie?.directorList?.map((director) => (
-                    <a className="text-blue-500 cursor-pointer hover:underline space-x-3">
+                    <a
+                      className="text-blue-500 cursor-pointer hover:underline space-x-3"
+                      onClick={() => handleDirectorClick(director.id)}
+                    >
                       {director?.name}
                     </a>
                   ))}

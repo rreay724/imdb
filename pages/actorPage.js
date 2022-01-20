@@ -8,6 +8,7 @@ export default function ActorPage() {
   const { id } = router.query;
   let movies = [];
   const [actor, setActor] = useState();
+  const [images, setImages] = useState();
 
   // get movie details
   useEffect(() => {
@@ -22,8 +23,21 @@ export default function ActorPage() {
     fetchActor();
   }, [id]);
 
-  console.log("Actor", actor);
-  console.log("MOVIES", movies);
+  useEffect(() => {
+    const fetchImages = async () => {
+      const image = await fetch(
+        `https://imdb-api.com/en/API/Images/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}/Full`
+      ).then((res) => res.json());
+
+      setImages(image);
+    };
+
+    fetchImages();
+  }, [id]);
+
+  // console.log("Actor", actor);
+  // console.log("MOVIES", movies);
+  console.log("IMAGES", images);
 
   let date = new Date(actor?.birthDate); // 2020-06-21
   let month = date.toLocaleString("en-us", { month: "long" }); /* June */
@@ -77,7 +91,14 @@ export default function ActorPage() {
                   <h1 className="text-white text-3xl  font-semibold">Photos</h1>
                 </div>
               </div>
-              <div className="flex overflow-x-scroll scrollbar-hide space-x-2"></div>
+              <div className="flex overflow-x-scroll scrollbar-hide space-x-2">
+                {images?.items.slice(0, 20).map((image) => (
+                  <img
+                    src={image.image}
+                    className="w-40 h-40 object-cover cursor-pointer"
+                  />
+                ))}
+              </div>
             </div>
             {/* End Images */}
 
