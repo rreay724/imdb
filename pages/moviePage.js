@@ -83,18 +83,20 @@ export default function MoviePage() {
               </div>
             </div>
             <div className="flex justify-end">
-              <div>
-                <h4 className="text-gray-400 text-sm">IMDb RATING</h4>
-                <div className="flex items-center space-x-2">
-                  <StarIcon className="text-yellow-500 w-10" />
-                  <div>
-                    <h2 className="text-white">{movie?.imDbRating}/10</h2>
-                    <p className="text-gray-400">
-                      {numFormatter(movie?.imDbRatingVotes)}
-                    </p>
+              {movie?.imDbRating && (
+                <div>
+                  <h4 className="text-gray-400 text-sm">IMDb RATING</h4>
+                  <div className="flex items-center space-x-2">
+                    <StarIcon className="text-yellow-500 w-10" />
+                    <div>
+                      <h2 className="text-white">{movie?.imDbRating}/10</h2>
+                      <p className="text-gray-400">
+                        {numFormatter(movie?.imDbRatingVotes)}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
           {/* End title and info */}
