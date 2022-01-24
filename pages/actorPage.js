@@ -3,11 +3,13 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Header, MovieListItem } from "../components/index";
 
-export default function ActorPage({ actor, images }) {
+export default function ActorPage({ actor, images, movies }) {
   let date = new Date(actor?.birthDate); // 2020-06-21
   let month = date.toLocaleString("en-us", { month: "long" }); /* June */
   let day = date.toLocaleString("en-us", { day: "numeric" }); /* June */
   let year = date.toLocaleString("en-us", { year: "numeric" }); /* June */
+  console.log("ACTOR", actor);
+  console.log("MOVIES", movies);
 
   return (
     <div className="min-h-screen bg-black-black min-w-screen">
@@ -75,7 +77,7 @@ export default function ActorPage({ actor, images }) {
               <div>
                 <div className="items-center  text-lg border border-gray-600 p-3 rounded-md">
                   <p className="text-white text-2xl">Filmography</p>
-                  {actor?.castMovies?.map((movie) => (
+                  {movies.map((movie) => (
                     <MovieListItem
                       id={movie?.id}
                       year={movie?.year}
@@ -97,14 +99,21 @@ export default function ActorPage({ actor, images }) {
 
 export const getServerSideProps = async (context) => {
   const { id } = context.query;
+  const movies = [];
 
   const actor = await fetch(
     `https://imdb-api.com/en/API/Name/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}`
   ).then((res) => res.json());
 
+  actor.castMovies.map((movie) => {
+    if (movie.role === "Actor") {
+      movies.push(movie);
+    }
+  });
+
   const images = await fetch(
     `https://imdb-api.com/en/API/Images/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}/Full`
   ).then((res) => res.json());
 
-  return { props: { actor, images } };
+  return { props: { actor, images, movies } };
 };
