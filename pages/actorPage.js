@@ -14,10 +14,6 @@ export default function ActorPage({
   let month = date.toLocaleString("en-us", { month: "long" }); /* June */
   let day = date.toLocaleString("en-us", { day: "numeric" }); /* June */
   let year = date.toLocaleString("en-us", { year: "numeric" }); /* June */
-  console.log("ACTOR", actor);
-  console.log("MOVIES", movies);
-  console.log("Director", directorMovies);
-  console.log("PRODUCER", producerMovies);
 
   return (
     <div className="min-h-screen bg-black-black min-w-screen">
@@ -85,57 +81,64 @@ export default function ActorPage({
               <div>
                 <div className="items-center  text-lg border border-gray-600 p-3 rounded-md">
                   <p className="text-white text-2xl">Filmography</p>
-                  <div>
-                    <div className="w-full bg-gradient-to-t from-black-light to-black-extraLight rounded-lg mt-7 flex">
-                      <h3 className="text-white font-semibold pl-2 shadow-lg">
-                        Actor
-                      </h3>
-                      <p className="text-gray-300 pl-1">{`(${movies.length} credits)`}</p>
+                  {movies.length ? (
+                    <div>
+                      <div className="w-full bg-gradient-to-t from-black-light to-black-extraLight rounded-lg mt-7 flex">
+                        <h3 className="text-white font-semibold pl-2 shadow-lg">
+                          Actor
+                        </h3>
+                        <p className="text-gray-300 pl-1">{`(${movies.length} credits)`}</p>
+                      </div>
+                      {movies.map((movie) => (
+                        <MovieListItem
+                          id={movie?.id}
+                          year={movie?.year}
+                          title={movie?.title}
+                          description={movie?.description}
+                          role={movie?.role}
+                        />
+                      ))}
                     </div>
-                    {movies.map((movie) => (
-                      <MovieListItem
-                        id={movie?.id}
-                        year={movie?.year}
-                        title={movie?.title}
-                        description={movie?.description}
-                        role={movie?.role}
-                      />
-                    ))}
-                  </div>
-                  <div>
-                    <div className="w-full bg-gradient-to-t from-black-light to-black-extraLight rounded-lg mt-7 flex">
-                      <h3 className="text-white font-semibold pl-2 shadow-lg">
-                        Director
-                      </h3>
-                      <p className="text-gray-300 pl-1">{`(${directorMovies.length} credits)`}</p>
+                  ) : null}
+                  {directorMovies && (
+                    <div>
+                      <div className="w-full bg-gradient-to-t from-black-light to-black-extraLight rounded-lg mt-7 flex">
+                        <h3 className="text-white font-semibold pl-2 shadow-lg">
+                          Director
+                        </h3>
+                        <p className="text-gray-300 pl-1">{`(${directorMovies.length} credits)`}</p>
+                      </div>
+                      {directorMovies.map((movie) => (
+                        <MovieListItem
+                          id={movie?.id}
+                          year={movie?.year}
+                          title={movie?.title}
+                          description={movie?.description}
+                          role={movie?.role}
+                        />
+                      ))}
                     </div>
-                    {directorMovies.map((movie) => (
-                      <MovieListItem
-                        id={movie?.id}
-                        year={movie?.year}
-                        title={movie?.title}
-                        description={movie?.description}
-                        role={movie?.role}
-                      />
-                    ))}
-                  </div>
-                  <div>
-                    <div className="w-full bg-gradient-to-t from-black-light to-black-extraLight rounded-lg mt-7 flex">
-                      <h3 className="text-white font-semibold pl-2 shadow-lg">
-                        Producer
-                      </h3>
-                      <p className="text-gray-300 pl-1">{`(${producerMovies.length} credits)`}</p>
+                  )}
+
+                  {producerMovies && (
+                    <div>
+                      <div className="w-full bg-gradient-to-t from-black-light to-black-extraLight rounded-lg mt-7 flex">
+                        <h3 className="text-white font-semibold pl-2 shadow-lg">
+                          Producer
+                        </h3>
+                        <p className="text-gray-300 pl-1">{`(${producerMovies.length} credits)`}</p>
+                      </div>
+                      {producerMovies.map((movie) => (
+                        <MovieListItem
+                          id={movie?.id}
+                          year={movie?.year}
+                          title={movie?.title}
+                          description={movie?.description}
+                          role={movie?.role}
+                        />
+                      ))}
                     </div>
-                    {producerMovies.map((movie) => (
-                      <MovieListItem
-                        id={movie?.id}
-                        year={movie?.year}
-                        title={movie?.title}
-                        description={movie?.description}
-                        role={movie?.role}
-                      />
-                    ))}
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -158,7 +161,7 @@ export const getServerSideProps = async (context) => {
   ).then((res) => res.json());
 
   actor.castMovies.map((movie) => {
-    if (movie.role === "Actor") {
+    if (movie.role === "Actor" || movie.role === "Actress") {
       movies.push(movie);
     }
   });
