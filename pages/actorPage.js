@@ -3,42 +3,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Header, MovieListItem } from "../components/index";
 
-export default function ActorPage() {
-  const router = useRouter();
-  const { id } = router.query;
-  let movies = [];
-  const [actor, setActor] = useState();
-  const [images, setImages] = useState();
-
-  // get movie details
-  useEffect(() => {
-    const fetchActor = async () => {
-      const star = await fetch(
-        `https://imdb-api.com/en/API/Name/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}`
-      ).then((res) => res.json());
-
-      setActor(star);
-    };
-
-    fetchActor();
-  }, [id]);
-
-  useEffect(() => {
-    const fetchImages = async () => {
-      const image = await fetch(
-        `https://imdb-api.com/en/API/Images/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}/Full`
-      ).then((res) => res.json());
-
-      setImages(image);
-    };
-
-    fetchImages();
-  }, [id]);
-
-  // console.log("Actor", actor);
-  // console.log("MOVIES", movies);
-  console.log("IMAGES", images);
-
+export default function ActorPage({ actor, images }) {
   let date = new Date(actor?.birthDate); // 2020-06-21
   let month = date.toLocaleString("en-us", { month: "long" }); /* June */
   let day = date.toLocaleString("en-us", { day: "numeric" }); /* June */
@@ -129,3 +94,17 @@ export default function ActorPage() {
     </div>
   );
 }
+
+export const getServerSideProps = async (context) => {
+  const { id } = context.query;
+
+  const actor = await fetch(
+    `https://imdb-api.com/en/API/Name/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}`
+  ).then((res) => res.json());
+
+  const images = await fetch(
+    `https://imdb-api.com/en/API/Images/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}/Full`
+  ).then((res) => res.json());
+
+  return { props: { actor, images } };
+};

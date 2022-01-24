@@ -5,14 +5,14 @@ import { Header, ActorItem, MovieCard } from "../components/index";
 import { StarIcon } from "@heroicons/react/solid";
 import { ChevronRightIcon } from "@heroicons/react/outline";
 
-export default function MoviePage() {
+export default function MoviePage({ movie, movieTrailer }) {
   const router = useRouter();
   const { id } = router.query;
 
-  const [movie, setMovie] = useState();
+  // const [movie, setMovie] = useState();
   const [images, setImages] = useState();
   const [similar, setSimilar] = useState();
-  const [movieTrailer, setMovieTrailer] = useState();
+  // const [movieTrailer, setMovieTrailer] = useState();
 
   console.log("MOVIE", movie);
   console.log("MOVIE TRAILER", movieTrailer);
@@ -37,27 +37,27 @@ export default function MoviePage() {
   };
 
   // get movie details
-  useEffect(() => {
-    const fetchMovies = async () => {
-      const movies = await fetch(
-        `https://imdb-api.com/en/API/Title/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}/FullActor,FullCast,Ratings,Images`
-      ).then((res) => res.json());
+  // useEffect(() => {
+  //   const fetchMovies = async () => {
+  //     const movies = await fetch(
+  //       `https://imdb-api.com/en/API/Title/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}/FullActor,FullCast,Ratings,Images`
+  //     ).then((res) => res.json());
 
-      setMovie(movies);
-    };
-    console.log("MOVIE", movie);
+  //     setMovie(movies);
+  //   };
+  //   console.log("MOVIE", movie);
 
-    fetchMovies();
+  //   fetchMovies();
 
-    const fetchTrailers = async () => {
-      const trailer = await fetch(
-        `https://imdb-api.com/en/API/Trailer/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}`
-      ).then((res) => res.json());
-      setMovieTrailer(trailer);
-    };
+  //   const fetchTrailers = async () => {
+  //     const trailer = await fetch(
+  //       `https://imdb-api.com/en/API/Trailer/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}`
+  //     ).then((res) => res.json());
+  //     setMovieTrailer(trailer);
+  //   };
 
-    fetchTrailers();
-  }, [id]);
+  //   fetchTrailers();
+  // }, [id]);
 
   return (
     <div className="min-h-screen bg-black-black min-w-screen">
@@ -255,3 +255,18 @@ export default function MoviePage() {
     </div>
   );
 }
+
+export const getServerSideProps = async (context) => {
+  const { id } = context.query;
+  const movie = await fetch(
+    `https://imdb-api.com/en/API/Title/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}/FullActor,FullCast,Ratings,Images`
+  ).then((res) => res.json());
+
+  const movieTrailer = await fetch(
+    `https://imdb-api.com/en/API/Trailer/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}`
+  ).then((res) => res.json());
+
+  return {
+    props: { movie, movieTrailer },
+  };
+};
