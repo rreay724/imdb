@@ -3,13 +3,21 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Header, MovieListItem } from "../components/index";
 
-export default function ActorPage({ actor, images, movies }) {
+export default function ActorPage({
+  actor,
+  images,
+  movies,
+  directorMovies,
+  producerMovies,
+}) {
   let date = new Date(actor?.birthDate); // 2020-06-21
   let month = date.toLocaleString("en-us", { month: "long" }); /* June */
   let day = date.toLocaleString("en-us", { day: "numeric" }); /* June */
   let year = date.toLocaleString("en-us", { year: "numeric" }); /* June */
   console.log("ACTOR", actor);
   console.log("MOVIES", movies);
+  console.log("Director", directorMovies);
+  console.log("PRODUCER", producerMovies);
 
   return (
     <div className="min-h-screen bg-black-black min-w-screen">
@@ -77,15 +85,57 @@ export default function ActorPage({ actor, images, movies }) {
               <div>
                 <div className="items-center  text-lg border border-gray-600 p-3 rounded-md">
                   <p className="text-white text-2xl">Filmography</p>
-                  {movies.map((movie) => (
-                    <MovieListItem
-                      id={movie?.id}
-                      year={movie?.year}
-                      title={movie?.title}
-                      description={movie?.description}
-                      role={movie?.role}
-                    />
-                  ))}
+                  <div>
+                    <div className="w-full bg-gradient-to-t from-black-light to-black-extraLight rounded-lg mt-7 flex">
+                      <h3 className="text-white font-semibold pl-2 shadow-lg">
+                        Actor
+                      </h3>
+                      <p className="text-gray-300 pl-1">{`(${movies.length} credits)`}</p>
+                    </div>
+                    {movies.map((movie) => (
+                      <MovieListItem
+                        id={movie?.id}
+                        year={movie?.year}
+                        title={movie?.title}
+                        description={movie?.description}
+                        role={movie?.role}
+                      />
+                    ))}
+                  </div>
+                  <div>
+                    <div className="w-full bg-gradient-to-t from-black-light to-black-extraLight rounded-lg mt-7 flex">
+                      <h3 className="text-white font-semibold pl-2 shadow-lg">
+                        Director
+                      </h3>
+                      <p className="text-gray-300 pl-1">{`(${directorMovies.length} credits)`}</p>
+                    </div>
+                    {directorMovies.map((movie) => (
+                      <MovieListItem
+                        id={movie?.id}
+                        year={movie?.year}
+                        title={movie?.title}
+                        description={movie?.description}
+                        role={movie?.role}
+                      />
+                    ))}
+                  </div>
+                  <div>
+                    <div className="w-full bg-gradient-to-t from-black-light to-black-extraLight rounded-lg mt-7 flex">
+                      <h3 className="text-white font-semibold pl-2 shadow-lg">
+                        Producer
+                      </h3>
+                      <p className="text-gray-300 pl-1">{`(${producerMovies.length} credits)`}</p>
+                    </div>
+                    {producerMovies.map((movie) => (
+                      <MovieListItem
+                        id={movie?.id}
+                        year={movie?.year}
+                        title={movie?.title}
+                        description={movie?.description}
+                        role={movie?.role}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -100,6 +150,8 @@ export default function ActorPage({ actor, images, movies }) {
 export const getServerSideProps = async (context) => {
   const { id } = context.query;
   const movies = [];
+  const directorMovies = [];
+  const producerMovies = [];
 
   const actor = await fetch(
     `https://imdb-api.com/en/API/Name/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}`
@@ -111,9 +163,21 @@ export const getServerSideProps = async (context) => {
     }
   });
 
+  actor.castMovies.map((producer) => {
+    if (producer.role === "Producer") {
+      producerMovies.push(producer);
+    }
+  });
+
+  actor.castMovies.map((director) => {
+    if (director.role === "Director") {
+      directorMovies.push(director);
+    }
+  });
+
   const images = await fetch(
     `https://imdb-api.com/en/API/Images/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}/Full`
   ).then((res) => res.json());
 
-  return { props: { actor, images, movies } };
+  return { props: { actor, images, movies, directorMovies, producerMovies } };
 };
