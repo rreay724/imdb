@@ -14,10 +14,6 @@ export default function ActorPage({
   let month = date.toLocaleString("en-us", { month: "long" }); /* June */
   let day = date.toLocaleString("en-us", { day: "numeric" }); /* June */
   let year = date.toLocaleString("en-us", { year: "numeric" }); /* June */
-  console.log("ACTOR", actor);
-  console.log("MOVIES", movies);
-  console.log("Director", directorMovies);
-  console.log("PRODUCER", producerMovies);
 
   return (
     <div className="min-h-screen bg-black-black min-w-screen">
