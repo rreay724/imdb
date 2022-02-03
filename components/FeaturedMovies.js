@@ -26,7 +26,7 @@ function FeaturedMovies() {
           </div>
         </div>
         <Carousel
-          disableArrowsOnEnd={true}
+          disableArrowsOnEnd={false}
           breakPoints={breakPoints}
           className="px-0 "
           outerSpacing={0}
@@ -53,7 +53,7 @@ function FeaturedMovies() {
           </div>
         </div>
         <Carousel
-          disableArrowsOnEnd={true}
+          disableArrowsOnEnd={false}
           breakPoints={breakPoints}
           className="px-0 "
           outerSpacing={0}
@@ -80,7 +80,7 @@ function FeaturedMovies() {
           </div>
         </div>
         <Carousel
-          disableArrowsOnEnd={true}
+          disableArrowsOnEnd={false}
           breakPoints={breakPoints}
           className="px-0 "
           outerSpacing={0}
@@ -107,7 +107,7 @@ function FeaturedMovies() {
           </div>
         </div>
         <Carousel
-          disableArrowsOnEnd={true}
+          disableArrowsOnEnd={false}
           breakPoints={breakPoints}
           className="px-0 "
           outerSpacing={0}
