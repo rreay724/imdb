@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useEffect, useState, useContext } from "react";
-import { Header, Trending, InTheaters } from "../components/index";
+import { Header, FeaturedMovies } from "../components/index";
 import { MovieContext, useMovie } from "../context/movieContext";
 
 export default function Home() {
@@ -9,7 +9,7 @@ export default function Home() {
   console.log("THEATERS", inTheaters);
 
   return (
-    <div className="min-h-screen bg-black-black overflow-y-scroll scrollbar-hide">
+    <div className="min-h-screen bg-black-black">
       <Head>
         <title>iMDB</title>
         <link rel="icon" href="/favicon.ico" />
@@ -17,11 +17,8 @@ export default function Home() {
       <Header />
 
       <main className="">
-        <div className="flex items-center justify-center pt-16">
-          <Trending />
-        </div>
-        <div className="flex items-center justify-center pt-16">
-          <InTheaters />
+        <div className="flex justify-center pt-16">
+          <FeaturedMovies />
         </div>
       </main>
     </div>
