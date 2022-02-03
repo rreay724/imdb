@@ -78,6 +78,6 @@ const MovieProvider = (props) => {
   return <MovieContext.Provider value={movieContextValue} {...props} />;
 };
 
-const useMovie = () => movieContext(MovieVontext);
+const useMovie = () => movieContext(MovieContext);
 
 export { MovieProvider, useMovie };
