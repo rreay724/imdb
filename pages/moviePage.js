@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Header, ActorItem, MovieCard } from "../components/index";
 import { StarIcon } from "@heroicons/react/solid";
 import { ChevronRightIcon } from "@heroicons/react/outline";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import Carousel from "react-elastic-carousel";
 
 export default function MoviePage({ movie, movieTrailer }) {
   const router = useRouter();
@@ -13,6 +15,14 @@ export default function MoviePage({ movie, movieTrailer }) {
   const [images, setImages] = useState();
   const [similar, setSimilar] = useState();
   // const [movieTrailer, setMovieTrailer] = useState();
+
+  const breakPoints = [
+    { width: 1, itemsToShow: 1 },
+    { width: 300, itemsToShow: 2 },
+    { width: 768, itemsToShow: 5 },
+    { width: 1200, itemsToShow: 5 },
+    { width: 1500, itemsToShow: 6 },
+  ];
 
   console.log("MOVIE", movie);
   console.log("MOVIE TRAILER", movieTrailer);
@@ -226,27 +236,32 @@ export default function MoviePage({ movie, movieTrailer }) {
             </div>
             {/* End director and all crew section */}
             {/* Similar movies */}
-            <div className="w-[60rem] pt-5">
-              <div className="flex pl-0 py-3 ">
+            <div className="w-[20rem] md:w-[40rem] lg:w-[70rem] xl:w-full">
+              <div className="flex ml-0 py-3 mt-10 pb-10">
                 <div className="border border-l-2 rounded-full border-yellow-500 h-9" />
                 <div className="pl-2">
                   <h1 className="text-white text-3xl  font-semibold">
                     More like this
                   </h1>
-                  <p className="text-gray-400">This week's top TV and movies</p>
                 </div>
               </div>
-              <div className="flex overflow-x-scroll">
+              <Carousel
+                disableArrowsOnEnd={false}
+                breakPoints={breakPoints}
+                outerSpacing={0}
+                enableSwipe={true}
+                pagination={false}
+              >
                 {movie?.similars?.map((movie) => (
                   <MovieCard
                     key={movie.id}
                     id={movie.id}
-                    rating={movie.imDbRating}
+                    rating={movie.vote_average}
                     poster={movie.image}
                     title={movie.title}
                   />
                 ))}
-              </div>
+              </Carousel>
             </div>
             {/* End similar movies */}
           </div>
