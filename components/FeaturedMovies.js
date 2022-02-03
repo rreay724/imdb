@@ -1,47 +1,11 @@
-import { MovieCard } from "../components/index";
+import { MovieCard } from "./index";
 import { MovieContext, useMovie } from "../context/movieContext";
 import { useContext } from "react";
-import Slider from "react-slick";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import Carousel from "react-elastic-carousel";
 
-function InTheaters() {
+function FeaturedMovies() {
   const { inTheaters, comingSoon, imdbTrending, tv } = useContext(MovieContext);
-  console.log("COMING SOON", comingSoon);
-  var settings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 5,
-    initialSlide: 0,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
-          infinite: true,
-          dots: true,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
 
   const breakPoints = [
     { width: 1, itemsToShow: 1 },
@@ -165,4 +129,4 @@ function InTheaters() {
   );
 }
 
-export default InTheaters;
+export default FeaturedMovies;

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useEffect, useState, useContext } from "react";
-import { Header, Trending, InTheaters } from "../components/index";
+import { Header, FeaturedMovies } from "../components/index";
 import { MovieContext, useMovie } from "../context/movieContext";
 
 export default function Home() {
@@ -18,7 +18,7 @@ export default function Home() {
 
       <main className="">
         <div className="flex justify-center pt-16">
-          <InTheaters />
+          <FeaturedMovies />
         </div>
       </main>
     </div>
