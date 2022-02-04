@@ -5,8 +5,6 @@ import { MovieContext, useMovie } from "../context/movieContext";
 
 export default function Home() {
   const { imdbTrending, inTheaters } = useContext(MovieContext);
-  console.log("IMDB", imdbTrending);
-  console.log("THEATERS", inTheaters);
 
   return (
     <div className="min-h-screen bg-black-black">

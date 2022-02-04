@@ -15,6 +15,10 @@ function FeaturedMovies() {
     { width: 1500, itemsToShow: 6 },
   ];
 
+  console.log("TRENDING", imdbTrending);
+  console.log("COMING SOON", comingSoon);
+  console.log("IN THEATERS", inTheaters);
+
   return (
     <div className="w-[20rem] md:w-[40rem] lg:w-[70rem] xl:w-[80rem]">
       <div className="my-10">
@@ -33,11 +37,11 @@ function FeaturedMovies() {
           enableSwipe={true}
           pagination={false}
         >
-          {imdbTrending?.items?.map((movie) => (
+          {imdbTrending?.items.slice(0, 15)?.map((movie) => (
             <MovieCard
               key={movie.id}
               id={movie.id}
-              rating={movie.vote_average}
+              rating={movie.imDbRating}
               poster={movie.image}
               title={movie.title}
             />
@@ -64,7 +68,7 @@ function FeaturedMovies() {
             <MovieCard
               key={movie.id}
               id={movie.id}
-              rating={movie.vote_average}
+              rating={movie.imDbRating}
               poster={movie.image}
               title={movie.title}
             />
@@ -91,7 +95,7 @@ function FeaturedMovies() {
             <MovieCard
               key={movie.id}
               id={movie.id}
-              rating={movie.vote_average}
+              rating={movie.imDbRating}
               poster={movie.image}
               title={movie.title}
             />
@@ -118,7 +122,7 @@ function FeaturedMovies() {
             <MovieCard
               key={movie.id}
               id={movie.id}
-              rating={movie.vote_average}
+              rating={movie.imDbRating}
               poster={movie.image}
               title={movie.title}
             />

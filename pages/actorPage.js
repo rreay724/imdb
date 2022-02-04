@@ -15,6 +15,17 @@ export default function ActorPage({
   let day = date.toLocaleString("en-us", { day: "numeric" }); /* June */
   let year = date.toLocaleString("en-us", { year: "numeric" }); /* June */
 
+  let deathDate = new Date(actor?.deathDate); // 2020-06-21
+  let deathMonth = deathDate.toLocaleString("en-us", {
+    month: "long",
+  }); /* June */
+  let deathDay = deathDate.toLocaleString("en-us", {
+    day: "numeric",
+  }); /* June */
+  let deathYear = deathDate.toLocaleString("en-us", {
+    year: "numeric",
+  }); /* June */
+
   return (
     <div className="min-h-screen bg-black-black min-w-screen">
       <Head>
@@ -27,7 +38,7 @@ export default function ActorPage({
         <div className="bg-black-default w-[80rem] px-12 py-10 my-10">
           {/* title and info header */}
 
-          <div className="grid grid-cols-2 items-center mx-auto w-[60rem] flex-grow ">
+          <div className="grid grid-cols-2 items-center mx-auto w-full flex-grow ">
             <div className="justify-start">
               <h1 className="text-white text-5xl">{actor?.name}</h1>
               <p className="text-blue-500 text-xs pt-2">
@@ -38,27 +49,35 @@ export default function ActorPage({
           </div>
           {/* End title and info */}
           {/* Start movie poster and details */}
-          <div className="pt-5 mx-auto w-[60rem]">
+          <div className="pt-5 mx-auto w-full">
             {/* end movie poster and details */}
-            <div className="border border-gray-600 p-3 rounded-md mb-2">
-              <div className="flex space-x-1">
-                <img src={actor?.image} className="w-[20rem]" />
+            <div className="border border-gray-600 p-3 rounded-md mb-2 px-20">
+              <div className="flex space-x-1 justify-center">
+                <img src={actor?.image} className="w-6/12" />
               </div>
               {/* start description and details */}
-              <div className="w-[50rem] py-4">
-                <p className="text-white text-sm">{actor?.summary}</p>
+              <div className="w-full py-4">
+                <p className="text-white text-md">{actor?.summary}</p>
                 <div className="flex pt-4 items-center space-x-3">
                   <p className="text-white font-semibold">Born: </p>
                   <p className="text-blue-500 text-sm">
                     {month + " " + day + ", " + year}
                   </p>
                 </div>
+                {actor?.deathDate && (
+                  <div className="flex pt-4 items-center space-x-3">
+                    <p className="text-white font-semibold">Death: </p>
+                    <p className="text-blue-500 text-sm">
+                      {deathMonth + " " + deathDay + ", " + deathYear}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 
             {/* end description and details */}
             {/* Start Images */}
-            <div className="w-[60rem]  border border-gray-600 p-3 rounded-md">
+            <div className="w-full  border border-gray-600 p-3 rounded-md">
               <div className="flex pl-0 py-3 ">
                 <div className="border border-l-2 rounded-full border-yellow-500 h-9" />
                 <div className="pl-2">
@@ -77,7 +96,7 @@ export default function ActorPage({
             {/* End Images */}
 
             {/* director and all crew section */}
-            <div className="py-5 mt-5 w-[60rem]">
+            <div className="py-5 mt-5 w-full">
               <div>
                 <div className="items-center  text-lg border border-gray-600 p-3 rounded-md">
                   <p className="text-white text-2xl">Filmography</p>

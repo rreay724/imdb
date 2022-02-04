@@ -12,6 +12,7 @@ function MovieCard({ poster, rating, title, id }) {
       },
     });
   };
+
   return (
     <div
       className="px-5 hover:opacity-80 cursor-pointer shadow-xl"

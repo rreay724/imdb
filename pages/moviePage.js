@@ -24,10 +24,7 @@ export default function MoviePage({ movie, movieTrailer }) {
     { width: 1500, itemsToShow: 6 },
   ];
 
-  console.log("MOVIE", movie);
-  console.log("MOVIE TRAILER", movieTrailer);
-
-  const handleDirectorClick = (id) => {
+  const handleClick = (id) => {
     router.push({
       pathname: "/actorPage",
       query: {
@@ -46,29 +43,6 @@ export default function MoviePage({ movie, movieTrailer }) {
     }
   };
 
-  // get movie details
-  // useEffect(() => {
-  //   const fetchMovies = async () => {
-  //     const movies = await fetch(
-  //       `https://imdb-api.com/en/API/Title/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}/FullActor,FullCast,Ratings,Images`
-  //     ).then((res) => res.json());
-
-  //     setMovie(movies);
-  //   };
-  //   console.log("MOVIE", movie);
-
-  //   fetchMovies();
-
-  //   const fetchTrailers = async () => {
-  //     const trailer = await fetch(
-  //       `https://imdb-api.com/en/API/Trailer/${process.env.NEXT_PUBLIC_IMDB_API_KEY}/${id}`
-  //     ).then((res) => res.json());
-  //     setMovieTrailer(trailer);
-  //   };
-
-  //   fetchTrailers();
-  // }, [id]);
-
   return (
     <div className="min-h-screen bg-black-black min-w-screen">
       <Head>
@@ -81,7 +55,7 @@ export default function MoviePage({ movie, movieTrailer }) {
         <div className="bg-black-default w-[80rem] px-12 py-10 my-10">
           {/* title and info header */}
 
-          <div className="grid grid-cols-2 items-center w-full flex-grow">
+          <div className="grid grid-cols-2 items-center w-full flex-grow ">
             <div className="justify-start">
               <h1 className="text-white text-5xl">{movie?.title}</h1>
               <div className="text-gray-400 space-x-2 flex items-center">
@@ -124,7 +98,7 @@ export default function MoviePage({ movie, movieTrailer }) {
             {/* end movie poster and details */}
 
             {/* genres */}
-            <div className="flex space-x-5 pt-5">
+            <div className="flex space-x-5 pt-5 w-full">
               {movie?.genreList?.map((genre) => (
                 <div
                   className="border-2 border-gray-300 rounded-full w-24 
@@ -136,7 +110,7 @@ export default function MoviePage({ movie, movieTrailer }) {
             </div>
             {/* end genres */}
             {/* start description and details */}
-            <div className="w-[60rem] ">
+            <div className="w-full ">
               <div className="py-3 text-gray-300 text-lg">
                 <p>{movie?.plot}</p>
               </div>
@@ -144,10 +118,10 @@ export default function MoviePage({ movie, movieTrailer }) {
                 <div>
                   <div className="flex space-x-3 items-center  text-lg">
                     <p className="text-gray-300 font-bold">Director</p>
-                    {movie?.directorList?.map((director) => (
+                    {movie?.fullCast.directors.items?.map((director) => (
                       <a
                         className="text-blue-500 cursor-pointer hover:underline space-x-3"
-                        onClick={() => handleDirectorClick(director.id)}
+                        onClick={() => handleClick(director.id)}
                       >
                         {director?.name}
                       </a>
@@ -159,11 +133,16 @@ export default function MoviePage({ movie, movieTrailer }) {
                 <div>
                   <div className="flex space-x-3 items-center  text-lg">
                     <p className="text-gray-300 font-bold">Writers</p>
-                    {movie?.writerList?.map((writer) => (
-                      <a className="text-blue-500 cursor-pointer hover:underline space-x-3">
-                        {writer?.name}
-                      </a>
-                    ))}
+                    {movie?.fullCast.writers.items
+                      .slice(0, 3)
+                      ?.map((writer) => (
+                        <a
+                          className="text-blue-500 cursor-pointer hover:underline space-x-3"
+                          onClick={() => handleClick(writer.id)}
+                        >
+                          {writer?.name}
+                        </a>
+                      ))}
                   </div>
                 </div>
               </div>
@@ -172,7 +151,10 @@ export default function MoviePage({ movie, movieTrailer }) {
                   <h3 className="text-gray-300 font-bold">Stars</h3>
                   <div className="flex space-x-3">
                     {movie?.starList?.map((actor) => (
-                      <a className="text-blue-500 cursor-pointer hover:underline">
+                      <a
+                        className="text-blue-500 cursor-pointer hover:underline"
+                        onClick={() => handleClick(actor.id)}
+                      >
                         {actor?.name}
                       </a>
                     ))}
@@ -183,7 +165,7 @@ export default function MoviePage({ movie, movieTrailer }) {
 
             {/* end description and details */}
             {/* Start Images */}
-            <div className="w-[60rem] pt-5">
+            <div className="w-full pt-5">
               <div className="flex pl-0 py-3 ">
                 <div className="border border-l-2 rounded-full border-yellow-500 h-9" />
                 <div className="pl-2">
@@ -206,7 +188,7 @@ export default function MoviePage({ movie, movieTrailer }) {
               <h1 className="text-gray-300 font-bold text-3xl">Top cast</h1>
               <ChevronRightIcon className="w-8 text-white font-semibold hover:text-yellow-500 pt-1" />
             </div>
-            <div className="grid grid-cols-2 space-y-5">
+            <div className="grid grid-cols-2 space-y-5 w-full ">
               {movie?.actorList?.slice(0, 20).map((castMember) => (
                 <ActorItem
                   key={castMember?.id}
@@ -219,14 +201,14 @@ export default function MoviePage({ movie, movieTrailer }) {
             </div>
             {/* end cast section */}
             {/* director and all crew section */}
-            <div className="border border-t border-b border-l-0 border-r-0 border-gray-500 py-5 mt-5 w-[60rem]">
+            <div className="border border-t border-b border-l-0 border-r-0 border-gray-500 py-5 mt-5 w-full">
               <div>
                 <div className="flex space-x-3 items-center  text-lg">
                   <p className="text-gray-300 font-bold">Director</p>
-                  {movie?.directorList?.map((director) => (
+                  {movie?.fullCast.directors.items?.map((director) => (
                     <a
                       className="text-blue-500 cursor-pointer hover:underline space-x-3"
-                      onClick={() => handleDirectorClick(director.id)}
+                      onClick={() => handleClick(director.id)}
                     >
                       {director?.name}
                     </a>
