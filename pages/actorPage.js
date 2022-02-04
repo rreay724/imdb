@@ -26,8 +26,6 @@ export default function ActorPage({
     year: "numeric",
   }); /* June */
 
-  console.log("ACTOR", actor);
-
   return (
     <div className="min-h-screen bg-black-black min-w-screen">
       <Head>
